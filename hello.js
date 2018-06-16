@@ -10,7 +10,7 @@ mongoose.connect('mongodb://localhost:27017/seguranca');
 var Schema = mongoose.Schema;
 
 var usuarioSchema = new Schema({  
- id: {type: String, required: true},  
+ _id: {type: String, required: true},  
  usuario: String,  
  senha: String  
 }, {collection: 'usuario'});  
@@ -81,11 +81,11 @@ function validaLogin(req){
 					console.error('erro no findByOne');
 					return false;
 				}
-				if (obj.id == ""){
+				if (obj._id == ""){
 					console.log('usuário não encontrado');
 					return true;
 				}
-				console.log('Sucesso!'+obj.id);
+				console.log('Sucesso!'+obj.senha);
 				return true;
 			});
 }
