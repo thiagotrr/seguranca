@@ -18,8 +18,6 @@ var usuarioSchema = new Schema({
 var Usuarios = mongoose.model('usuario', usuarioSchema);  
 
 app.set('trust proxy', 1);
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
 app.use(session({
   secret: 'keyboard cat',
   resave: false,
@@ -57,8 +55,8 @@ app.post('/login', upload.array(), function (req, res, next) {
     res.end();
   } else if(validaLogin(req)) {
 	  
-		/* Código default */
-		req.session.auth= true;
+	/* Código default */
+	req.session.auth= true;
     	res.end('welcome to the session demo. refresh!');
 		
   } else {
