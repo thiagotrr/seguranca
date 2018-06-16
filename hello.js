@@ -18,8 +18,6 @@ var usuarioSchema = new Schema({
 var Usuarios = mongoose.model('usuario', usuarioSchema);  
 
 app.set('trust proxy', 1);
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
 app.use(session({
   secret: 'keyboard cat',
   resave: false,
