@@ -48,38 +48,12 @@ app.get('/', function (req, res) {
 
 app.post('/login', upload.array(), function (req, res, next) {
   console.log(req.body);
-  
-  Usuarios.findOne({ "usuario": req.body.nome, "senha": req.body.senha }, 
-			function(err, obj){
-				if (err) { 
-					console.error('erro no findByOne');
-					return false;
-				}
-				if (obj.id = ""){
-					console.log('usuário não encontrado');
-					return true;
-				}
-				console.log('Sucesso!'+obj.id);
-				return true;
-			});
-  
+ 
   if (req.session.auth==true) {
     res.setHeader('Content-Type', 'text/html');
     res.write('<html><head><meta charset="utf-8"></head><body><p>Você já está logado</p></body></html>');
     res.end();
-  } else if(Usuarios.findOne({ "usuario": req.body.nome, "senha": req.body.senha }, 
-			function(err, obj){
-				if (err) { 
-					console.error('erro no findByOne');
-					return false;
-				}
-				if (obj.id = ""){
-					console.log('usuário não encontrado');
-					return true;
-				}
-				console.log('Sucesso!'+obj.id);
-				return true;
-			});) {
+  } else if(validaLogin()) {
 	  
 		/* Código default */
 		req.session.auth= true;
@@ -101,6 +75,22 @@ app.get('/count', function (req, res) {
     res.end('no session demo, go to root!')
   }
 });
+
+function validaLogin(){
+	Usuarios.findOne({ "usuario": req.body.nome, "senha": req.body.senha }, 
+			function(err, obj){
+				if (err) { 
+					console.error('erro no findByOne');
+					return false;
+				}
+				if (obj.id = ""){
+					console.log('usuário não encontrado');
+					return true;
+				}
+				console.log('Sucesso!'+obj.id);
+				return true;
+			});
+}
 
 app.listen(3000, function () {
   console.log('Example app listening on port 3000!');
