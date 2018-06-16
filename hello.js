@@ -18,6 +18,8 @@ var usuarioSchema = new Schema({
 var Usuarios = mongoose.model('usuario', usuarioSchema);  
 
 app.set('trust proxy', 1);
+app.use('/', indexRouter);
+app.use('/users', usersRouter);
 app.use(session({
   secret: 'keyboard cat',
   resave: false,
@@ -46,12 +48,14 @@ app.get('/', function (req, res) {
 
 app.post('/login', upload.array(), function (req, res, next) {
   console.log(req.body);
- 
+  
+  
+  
   if (req.session.auth==true) {
     res.setHeader('Content-Type', 'text/html');
     res.write('<html><head><meta charset="utf-8"></head><body><p>Você já está logado</p></body></html>');
     res.end();
-  } else if(validaLogin()) {
+  } else if(validaLogin(req)) {
 	  
 		/* Código default */
 		req.session.auth= true;
@@ -74,7 +78,7 @@ app.get('/count', function (req, res) {
   }
 });
 
-function validaLogin(){
+function validaLogin(req){
 	Usuarios.findOne({ "usuario": req.body.nome, "senha": req.body.senha }, 
 			function(err, obj){
 				if (err) { 
