@@ -47,16 +47,14 @@ app.get('/', function (req, res) {
 app.post('/login', upload.array(), function (req, res, next) {
   console.log(req.body);
   
-  
-  
   if (req.session.auth==true) {
     res.setHeader('Content-Type', 'text/html');
     res.write('<html><head><meta charset="utf-8"></head><body><p>Você já está logado</p></body></html>');
     res.end();
-  } else if(validaLogin(req)) {
+  } else if(validaLogin(req)==true) {
 	  
-	/* Código default */
-	req.session.auth= true;
+		/* Código default */
+		req.session.auth = true;
     	res.end('welcome to the session demo. refresh!');
 		
   } else {
@@ -83,7 +81,7 @@ function validaLogin(req){
 					console.error('erro no findByOne');
 					return false;
 				}
-				if (obj.id = ""){
+				if (obj.id == ""){
 					console.log('usuário não encontrado');
 					return true;
 				}
