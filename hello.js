@@ -17,7 +17,7 @@ var usuarioSchema = new Schema({
  login: String,  
  senha: String  
 });  
-var Usuario = mongoose.model('usuario', usuarioSchema);  
+var Usuario = mongoose.model('Usuario', usuarioSchema);  
 
 app.set('trust proxy', 1);
 app.use(session({
@@ -53,7 +53,7 @@ app.post('/login', upload.array(), function (req, res, next) {
     res.end();
   } 
 
-  Usuario.findOne({ "login": req.body.nome, "senha": req.body.senha },  
+  Usuario.findOne({ "login":req.body.login, "senha":req.body.senha },  
 		  	function(err, obj){
 				if (err) { 
 					handleError(err);
