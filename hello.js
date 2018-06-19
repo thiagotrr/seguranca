@@ -10,7 +10,7 @@ mongoose.connect('mongodb://localhost:27017/seguranca');
 var Schema = mongoose.Schema;
 
 var usuarioSchema = new Schema({  
- id: String,  
+ id: Number,  
  usuario: String,  
  senha: String  
 });  
