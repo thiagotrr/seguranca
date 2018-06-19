@@ -10,7 +10,7 @@ mongoose.connect('mongodb://localhost:27017/seguranca');
 var Schema = mongoose.Schema;
 
 var usuarioSchema = new Schema({  
- id: type: String,  
+ id: String,  
  usuario: String,  
  senha: String  
 });  
@@ -51,7 +51,8 @@ app.post('/login', upload.array(), function (req, res, next) {
     res.end();
   } 
   
-  Usuarios.findOne({ "usuario": req.body.nome, "senha": req.body.senha }, 
+  //Usuarios.findOne({ "login": req.body.nome, "senha": req.body.senha }, 
+  Usuarios.findById( {1},
 			function(err, obj){
 				console.log(obj);
 				if (err) { 
