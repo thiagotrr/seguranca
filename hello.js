@@ -4,9 +4,8 @@ var app = express();
 var multer  = require('multer');
 var upload = multer();
 
-var mongo = require('mongodb');
 var mongoose = require('mongoose'); 
-mongoose.connect('mongodb://localhost:27017/seguranca');
+mongoose.connect('mongodb://127.0.0.1:27017/seguranca');
 var db = mongoose.connection;
 db.once('open', function() { console.log('Conectou ao Mongo');});
 db.on('error', console.error.bind(console, 'erro ao conectar-se ao Mongo:'));
@@ -64,7 +63,7 @@ app.post('/login', upload.array(), function (req, res, next) {
 					console.log('usuário não encontrado');
 					res.end('Usuário/senha não encontrados!');
 				} else {
-				console.log('Sucesso!');
+					console.log('Sucesso!');
 					req.session.auth = true;
 					res.end('welcome to the session demo. refresh!'+obj._id);
 				}
