@@ -13,7 +13,7 @@ db.on('error', console.error.bind(console, 'erro ao conectar-se ao Mongo:'));
 
 var Schema = mongoose.Schema;
 var usuarioSchema = new Schema({  
- id: Number,  
+ _id: Number,  
  login: String,  
  senha: String  
 });  
@@ -56,10 +56,11 @@ app.post('/login', upload.array(), function (req, res, next) {
   Usuario.findOne({ "login": req.body.nome, "senha": req.body.senha }, '_id', 
 		  	function(err, obj){
 				if (err) { 
+					handleError(err);
 					console.error('erro no findByOne');
 					res.end('Erro no login!');
 				}
-				if (obj.id == ""){
+				if (obj == null){
 					console.log('usuário não encontrado');
 					res.end('Usuário/senha não encontrados!');
 				}
