@@ -14,7 +14,7 @@ db.once('open', function() { console.log('Successfully connected');});
 db.on('error', console.error.bind(console, 'conn error:'));
 
 var usuarioSchema = new Schema({  
- id: mongoose.Schema.Types.Objectid,  
+ _id: Number,  
  login: String,  
  senha: String  
 });  
