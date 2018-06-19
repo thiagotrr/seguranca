@@ -52,8 +52,7 @@ app.post('/login', upload.array(), function (req, res, next) {
   } 
   
   //Usuarios.findOne({ "login": req.body.nome, "senha": req.body.senha }, 
-  Usuarios.findById( {1},
-			function(err, obj){
+  Usuarios.findById(1, function(err, obj){
 				console.log(obj);
 				if (err) { 
 					console.error('erro no findByOne');
