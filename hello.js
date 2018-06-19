@@ -8,13 +8,13 @@ var mongo = require('mongodb');
 var mongoose = require('mongoose'); 
 var Schema = mongoose.Schema;
 
-mongoose.connect('mongodb://localhost:27017/seguranca', function(err){
-	if (err) throw err;
-	console.log('Conectou!');
-});  
+mongoose.connect('mongodb://localhost:27017/seguranca');
+var db = mongoose.connection;
+db.once('open', function() { console.log('Successfully connected');});
+db.on('error', console.error.bind(console, 'conn error:'));
 
 var usuarioSchema = new Schema({  
- _id: mongoose.Schema.Types.Objectid,  
+ id: mongoose.Schema.Types.Objectid,  
  login: String,  
  senha: String  
 });  
