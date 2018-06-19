@@ -6,16 +6,20 @@ var upload = multer();
 
 var mongo = require('mongodb');
 var mongoose = require('mongoose'); 
-mongoose.connect('mongodb://localhost:27017/seguranca');  
 var Schema = mongoose.Schema;
 
+mongoose.connect('mongodb://localhost:27017/seguranca', function(err){
+	if (err) throw err;
+	console.log('Conectou!');
+});  
+
 var usuarioSchema = new Schema({  
- id: Number,  
- usuario: String,  
+ _id: mongoose.Schema.Types.Objectid,  
+ login: String,  
  senha: String  
 });  
 
-var Usuarios = mongoose.model('usuario', usuarioSchema);  
+var Usuario = mongoose.model('usuario', usuarioSchema);  
 
 app.set('trust proxy', 1);
 app.use(session({
@@ -51,8 +55,8 @@ app.post('/login', upload.array(), function (req, res, next) {
     res.end();
   } 
   
-  //Usuarios.findOne({ "login": req.body.nome, "senha": req.body.senha }, 
-  Usuarios.findById(1, function(err, obj){
+  //Usuario.findOne({ "login": req.body.nome, "senha": req.body.senha }, 
+  Usuario.findById(1, function(err, obj){
 				console.log(obj);
 				if (err) { 
 					console.error('erro no findByOne');
