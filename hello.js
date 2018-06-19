@@ -5,15 +5,15 @@ var multer  = require('multer');
 var upload = multer();
 
 var mongo = require('mongodb');
-var mongoose = require('mongoose');  
+var mongoose = require('mongoose'); 
 mongoose.connect('mongodb://localhost:27017/seguranca');  
 var Schema = mongoose.Schema;
 
 var usuarioSchema = new Schema({  
- _id: {type: String, required: true},  
+ id: type: String,  
  usuario: String,  
  senha: String  
-}, {collection: 'usuario'});  
+});  
 
 var Usuarios = mongoose.model('usuario', usuarioSchema);  
 
@@ -24,8 +24,6 @@ app.use(session({
   saveUninitialized: true,
   cookie: { secure: false }
 }));
-
-
 
 app.get('/', function (req, res) {
   if(req.session.auth==true) {
@@ -51,15 +49,35 @@ app.post('/login', upload.array(), function (req, res, next) {
     res.setHeader('Content-Type', 'text/html');
     res.write('<html><head><meta charset="utf-8"></head><body><p>Você já está logado</p></body></html>');
     res.end();
-  } else if(validaLogin(req)==true) {
+  } 
+  
+  Usuarios.findOne({ "usuario": req.body.nome, "senha": req.body.senha }, 
+			function(err, obj){
+				console.log(obj);
+				if (err) { 
+					console.error('erro no findByOne');
+					res.end('Erro no login!');
+				}
+				if (obj.id == ""){
+					console.log('usuário não encontrado');
+					res.end('Usuário/senha não encontrados!');
+				}
+				console.log('Sucesso!');
+					req.session.auth = true;
+					res.end('welcome to the session demo. refresh!');
+			}
+	);
+  
+  /* Código default 
+  else if(validaLogin(req)==true) {
 	  
-		/* Código default */
+		
 		req.session.auth = true;
     	res.end('welcome to the session demo. refresh!');
 		
   } else {
 		res.end('try again');
-  }
+  }*/
 });
 
 app.get('/count', function (req, res) {
@@ -73,22 +91,6 @@ app.get('/count', function (req, res) {
     res.end('no session demo, go to root!')
   }
 });
-
-function validaLogin(req){
-	Usuarios.findOne({ "usuario": req.body.nome, "senha": req.body.senha }, 
-			function(err, obj){
-				if (err) { 
-					console.error('erro no findByOne');
-					return false;
-				}
-				if (obj._id == ""){
-					console.log('usuário não encontrado');
-					return true;
-				}
-				console.log('Sucesso!'+obj.senha);
-				return true;
-			});
-}
 
 app.listen(3000, function () {
   console.log('Example app listening on port 3000!');
