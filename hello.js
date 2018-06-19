@@ -53,7 +53,7 @@ app.post('/login', upload.array(), function (req, res, next) {
     res.end();
   } 
 
-  Usuario.findOne({ "login": req.body.nome, "senha": req.body.senha }, '_id', 
+  Usuario.findOne({ "login": req.body.nome, "senha": req.body.senha },  
 		  	function(err, obj){
 				if (err) { 
 					handleError(err);
@@ -63,10 +63,11 @@ app.post('/login', upload.array(), function (req, res, next) {
 				if (obj == null){
 					console.log('usuário não encontrado');
 					res.end('Usuário/senha não encontrados!');
-				}
+				} else {
 				console.log('Sucesso!');
 					req.session.auth = true;
-					res.end('welcome to the session demo. refresh!'+obj.id);
+					res.end('welcome to the session demo. refresh!'+obj._id);
+				}
 			}
 	);
   
