@@ -6,19 +6,17 @@ var upload = multer();
 
 var mongo = require('mongodb');
 var mongoose = require('mongoose'); 
-var Schema = mongoose.Schema;
-
 mongoose.connect('mongodb://localhost:27017/seguranca');
 var db = mongoose.connection;
-db.once('open', function() { console.log('Successfully connected');});
-db.on('error', console.error.bind(console, 'conn error:'));
+db.once('open', function() { console.log('Conectou ao Mongo');});
+db.on('error', console.error.bind(console, 'erro ao conectar-se ao Mongo:'));
 
+var Schema = mongoose.Schema;
 var usuarioSchema = new Schema({  
- _id: Number,  
+ id: Number,  
  login: String,  
  senha: String  
 });  
-
 var Usuario = mongoose.model('usuario', usuarioSchema);  
 
 app.set('trust proxy', 1);
@@ -54,10 +52,9 @@ app.post('/login', upload.array(), function (req, res, next) {
     res.write('<html><head><meta charset="utf-8"></head><body><p>Você já está logado</p></body></html>');
     res.end();
   } 
-  
-  //Usuario.findOne({ "login": req.body.nome, "senha": req.body.senha }, 
-  Usuario.findById(1, function(err, obj){
-				console.log(obj);
+
+  Usuario.findOne({ "login": req.body.nome, "senha": req.body.senha }, '_id', 
+		  	function(err, obj){
 				if (err) { 
 					console.error('erro no findByOne');
 					res.end('Erro no login!');
@@ -68,7 +65,7 @@ app.post('/login', upload.array(), function (req, res, next) {
 				}
 				console.log('Sucesso!');
 					req.session.auth = true;
-					res.end('welcome to the session demo. refresh!');
+					res.end('welcome to the session demo. refresh!'+obj.id);
 			}
 	);
   
